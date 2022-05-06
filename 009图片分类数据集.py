@@ -2,7 +2,7 @@
 # -*-coding:utf-8 -*-
 # @anthor haotian
 # @date 2022/5/6
-# @file 009Softmax回归 + 损失函数 + 图片分类数据集.py
+# @file 009图片分类数据集.py
 
 import torch
 import torchvision   # computer vision
