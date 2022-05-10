@@ -18,7 +18,7 @@ class MLP(nn.Module):
     def forward(self, x):
         return self.out(F.relu(self.hidden(x)))
 
-x = torch.rand(2, 20)
+# x = torch.rand(2, 20)
 
 # net = MLP()
 # print(net(x))
@@ -69,6 +69,52 @@ class NestMLP(nn.Module):
 
     def forward(self, x):
         return self.linear(self.net(x))
+#
+# net = NestMLP()
+# print(net(x))
 
-net = NestMLP()
-print(net(x))
+
+# parameter management
+
+# net = nn.Sequential(nn.Linear(4, 8), nn.ReLU(), nn.Linear(8, 1))
+x = torch.rand(size=(2, 4))
+# print(net(x))
+
+# for i in range(3):
+#     print(net[i].state_dict())
+
+# print(*[(name, param.shape) for name, param in net.named_parameters()])
+
+
+# collect parameters from nesting block
+def block1():
+    return nn.Sequential(nn.Linear(4, 8), nn.ReLU(), nn.Linear(8, 4),
+                         nn.ReLU())
+
+def block2():
+    net = nn.Sequential()
+    for i in range(4):
+        net.add_module(f'block{i}', block1())
+    return net
+
+# rgnet = nn.Sequential(block2(), nn.Linear(4, 1))
+#
+# print(rgnet)
+
+# init
+def init_normal(m):
+    if type(m) == nn.Linear:
+        nn.init.normal_(m.weight, mean=0, std=0.01)
+        nn.init.zeros_(m.bias)
+# net.apply(init_normal)
+
+# do different initialization for every block
+# net[0].apply(i1)
+# net[1].applt(i2)
+
+# share weight, parameter binding, the shared layer's parameter is same
+shared = nn.Linear(8, 8)
+net = nn.Sequential(nn.Linear(4, 8), nn.ReLU(), shared, nn.ReLU(), shared, nn.ReLU(), nn.Linear(8, 1))
+# the second layer is equal to the forth layer
+print(net[2].weight.data[0] == net[4].weight.data[0])
+
