@@ -28,6 +28,7 @@ inputs = inputs.fillna(inputs.mean())
 inputs = pd.get_dummies(inputs,dummy_na=True)
 
 print(inputs)
+# most simply features and labels
 x, y = torch.tensor(inputs.values), torch.tensor(outputs.values)
 
 print(x, y)

@@ -37,11 +37,12 @@ def vgg(conv_arch):
     )
 from common_class.train_ch6 import train_ch6
 net = vgg(conv_arch=conv_arch)
-lr, num_epochs, batch_size = 0.05, 10, 128
+lr, num_epochs, batch_size = 0.05, 10, 32
 train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size, resize=224)
+
+print('training start')
 train_ch6(net, train_iter, test_iter, num_epochs, lr, d2l.try_gpu())
-
-
+print('training end')
 # x = torch.randn(size=(1, 1, 224, 224))
 #
 # for blk in net:
