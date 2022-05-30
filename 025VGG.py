@@ -7,6 +7,8 @@
 VGG block 3*3 conv  padding = 1
 2*2 maxpool s = 2
 '''
+import os
+
 import torch
 from torch import nn
 from d2l import torch as d2l
@@ -36,12 +38,16 @@ def vgg(conv_arch):
         nn.Linear(4096, 10)
     )
 from common_class.train_ch6 import train_ch6
+
+ratio = 4
+small_conv_arch = [(pair[0], pair[1] // ratio) for pair in conv_arch]
 net = vgg(conv_arch=conv_arch)
-lr, num_epochs, batch_size = 0.05, 10, 32
+lr, num_epochs, batch_size = 0.05, 10, 4
 train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size, resize=224)
+# os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
 
 print('training start')
-train_ch6(net, train_iter, test_iter, num_epochs, lr, d2l.try_gpu())
+train_ch6(net, train_iter, test_iter, num_epochs, lr, None)
 print('training end')
 # x = torch.randn(size=(1, 1, 224, 224))
 #
