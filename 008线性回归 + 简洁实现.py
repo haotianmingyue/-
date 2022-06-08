@@ -40,6 +40,8 @@ for epoch in range(num_epochs):
         trainer.zero_grad()
         l.backward()
         trainer.step() #update gradient
+    # print(labels.__class__)
+    # break
     l = loss(net(features), labels)
     print(f'epoch {epoch + 1},loss {l:f}') # :f keep six float
 
